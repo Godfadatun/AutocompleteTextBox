@@ -3,7 +3,7 @@ import React from 'react'
 export default class Autocomplete extends React.Component{
     constructor(props){
         super(props);
-            this.item = [
+            this.items = [
                 'Riko',
                 'Elijah',
                 'Ruben',
@@ -15,19 +15,21 @@ export default class Autocomplete extends React.Component{
                 'Victor'
             ];
             this.state = {
-                suggestions : []
+                suggestions : [],
+                text: ''
             }
     }
 
     // THIS CHECKS IF THERE IS AN INPUT AND IF THERE IT SORTS IT AND FILTERS IT FROM THE SUGGESTION
     onTextChanged = (e) => {
         const value = e.target.value;
+        
         let suggestions = [];
         if(value.length > 0){
             const regex = new RegExp(`^${value}`, 'i');
-            suggestions = this.items.sort().filter(v => v.test(regex));
+            suggestions = this.items.sort().filter(v => regex.test(v));
         }
-        this.setState(() => ({suggestions}))
+        this.setState(() => ({suggestions})) 
 
         //OPTION 2
         /*
@@ -37,7 +39,7 @@ export default class Autocomplete extends React.Component{
             }));
         }else {
             const regex = new RegExp(`^${value}`, 'i');
-            const suggestions = this.items.sort().filter(v => v.test(regex));
+            const suggestions = this.items.sort().filter(v => regex.test(v));
             this.setState(() => ({suggestions}))
         }*/
     }
@@ -48,7 +50,7 @@ export default class Autocomplete extends React.Component{
             return null;
         }return (
             <ul>
-              {this.suggestions.map(i => <li>{i}</li>)}
+              {suggestions.map(i => <li>{i}</li>)}
             </ul>
         )
     }
@@ -56,8 +58,8 @@ export default class Autocomplete extends React.Component{
     render(){
         return(
         <div>
-            <input onChange={this.onTextChanged} type='text' />
-            {this.renderSuggestions}
+            <input value='' onChange={this.onTextChanged} type='text' />
+            {this.renderSuggestions()}
                 {/*<ul> */}
                     {/*were "i" was used tutor used "item" */}
                    {/* {this.item.map(i => <li>{i}</li>)} */}
