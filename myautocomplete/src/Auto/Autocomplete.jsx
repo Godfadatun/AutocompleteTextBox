@@ -5,6 +5,7 @@ export default class Autocomplete extends React.Component{
         super(props);
             this.items = [
                 'Riko',
+                'Daniel',
                 'Elijah',
                 'Ruben',
                 'Gerrard',
@@ -16,7 +17,7 @@ export default class Autocomplete extends React.Component{
             ];
             this.state = {
                 suggestions : [],
-                text: ''
+                text : ''
             }
     }
 
@@ -29,7 +30,10 @@ export default class Autocomplete extends React.Component{
             const regex = new RegExp(`^${value}`, 'i');
             suggestions = this.items.sort().filter(v => regex.test(v));
         }
-        this.setState(() => ({suggestions})) 
+        this.setState(() => ({
+            suggestions,
+            text: value
+        })) 
 
         //OPTION 2
         /*
@@ -56,9 +60,10 @@ export default class Autocomplete extends React.Component{
     }
 
     render(){
+        const { text } = this.state;
         return(
         <div>
-            <input value='' onChange={this.onTextChanged} type='text' />
+            <input value={text} onChange={this.onTextChanged} type='text' />
             {this.renderSuggestions()}
                 {/*<ul> */}
                     {/*were "i" was used tutor used "item" */}
